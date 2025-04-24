@@ -1,4 +1,3 @@
- 
 <script setup>
 import TodoForm from './components/TodoForm.vue'
 </script>
@@ -6,9 +5,7 @@ import TodoForm from './components/TodoForm.vue'
 <template>
   <div>Primeira página com vue.js</div>
 
-
-    <TodoForm   />
-
+  <TodoForm />
   
 </template>
 
