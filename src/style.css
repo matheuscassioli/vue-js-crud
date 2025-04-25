@@ -1,3 +1,9 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -36,11 +42,6 @@ h1 {
   line-height: 1.1;
 }
 
-
-.card {
-  padding: 2em;
-}
-
 #app {
   width: 100%;
   padding: 2rem;
@@ -49,7 +50,7 @@ h1 {
 button {
   cursor: pointer;
 }
-  
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

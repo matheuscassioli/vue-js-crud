@@ -23,8 +23,8 @@ const handleSubmit = () => {
   if (taskExists) {
     alert('Esse item já está na lista!');
     return;
-  } 
-  
+  }
+
   const newId = tasks.value.length ? tasks.value[tasks.value.length - 1].id + 1 : 0;
 
   const newTaskObj = {
@@ -37,10 +37,6 @@ const handleSubmit = () => {
   localStorage.setItem('tasks', JSON.stringify(tasksInLocalStorage));
   loadTasksFromLocalStorage();
   newTask.value = "";
-
-  // setTimeout(() => {
-  //   document.querySelector('.list-container').classList.remove('opacity')
-  // }, 1000)
 }
 
 const handleDelete = (id) => {
@@ -50,10 +46,11 @@ const handleDelete = (id) => {
   loadTasksFromLocalStorage();
 }
 
-const handleSearch = () => {
-  console.log('filtar')
+const handleSearch = (e) => {
+  console.log(e.target.value)
 }
 
+//  
 </script>
 
 <template>
@@ -62,37 +59,38 @@ const handleSearch = () => {
     <p>Gerencie suas tarefas</p>
 
     <div class="inputs-container">
-
-      <form @submit.prevent="handleSearch">
-        <input placeholder="Filtrar" />
-        <button type="submit">Filtrar</button>
-        <button>Limpar</button>
-      </form>
-
       <form @submit.prevent="handleSubmit">
         <input v-model="newTask" placeholder="Digite uma tarefa" />
         <button type="submit">Adicionar</button>
       </form>
 
+      <form>
+        <input @input="handleSearch" placeholder="Filtrar" />
+      </form>
     </div>
 
-    <ul class="list-container">
-      <li v-for="(task, index) in tasks" :key="index">{{ task.task }}
-        <button @click="handleDelete(task.id)">
-          <Trash2 :size="16" />
-        </button>
-      </li>
+    <div class="list-context-container">
+      <ul v-if="tasks.length !== 0" class="list-container">
+        <li v-for="(task, index) in tasks" :key="index">{{ task.task }}
+          <button @click="handleDelete(task.id)">
+            <Trash2 :size="16" />
+          </button>
+        </li>
+      </ul>
 
       <div class="list-empty" v-if="tasks.length === 0">
         Não há tarefas. Adicione uma!
       </div>
-    </ul>
-
+    </div>
   </div>
 
 </template>
 
 <style scoped>
+.list-context-container {
+  min-height: 350px;
+}
+
 .list-container {
   display: flex;
   list-style-type: none;
@@ -139,8 +137,7 @@ const handleSearch = () => {
 }
 
 .inputs-container {
-  display: flex;
-  justify-content: space-between;
+  /*  */
 }
 
 .list-empty {
