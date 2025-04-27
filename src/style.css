@@ -51,6 +51,12 @@ button {
   cursor: pointer;
 }
 
+.ov-icon {
+  width: 20px;
+  height: 20px;
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

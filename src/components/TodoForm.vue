@@ -1,10 +1,12 @@
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { Trash2 } from 'lucide-vue-next';
+import { ViFileTypeExcel } from "oh-vue-icons/icons";
 
 const newTask = ref("");
 const tasks = ref([]);
+const searchParam = ref('')
 
 onMounted(() => {
   loadTasksFromLocalStorage();
@@ -37,6 +39,7 @@ const handleSubmit = () => {
   localStorage.setItem('tasks', JSON.stringify(tasksInLocalStorage));
   loadTasksFromLocalStorage();
   newTask.value = "";
+  searchParam.value = "";
 }
 
 const handleDelete = (id) => {
@@ -46,17 +49,29 @@ const handleDelete = (id) => {
   loadTasksFromLocalStorage();
 }
 
-const handleSearch = (e) => {
-  console.log(e.target.value)
-}
+const filteredTasks = computed(() => {
+  return tasks.value.filter(task =>
+    task.task.trim().toLowerCase().includes(searchParam.value.toLowerCase())
+  )
+})
 
-//  
 </script>
 
 <template>
   <div class="form-container">
 
-    <p>Gerencie suas tarefas</p>
+
+    <div class="title-container">
+      <p>Gerencie suas tarefas</p>
+      <div class="exports-container">
+        <button>
+          <v-icon name="vi-file-type-excel" />
+        </button>
+        <button>
+          <v-icon name="vi-file-type-pdf" width="24" height="24" />
+        </button>
+      </div>
+    </div>
 
     <div class="inputs-container">
       <form @submit.prevent="handleSubmit">
@@ -65,22 +80,24 @@ const handleSearch = (e) => {
       </form>
 
       <form>
-        <input @input="handleSearch" placeholder="Filtrar" />
+        <input v-model="searchParam" placeholder="Filtrar" />
       </form>
     </div>
 
     <div class="list-context-container">
-      <ul v-if="tasks.length !== 0" class="list-container">
-        <li v-for="(task, index) in tasks" :key="index">{{ task.task }}
+      <ul v-if="filteredTasks.length !== 0" class="list-container">
+        <li v-for="(task, index) in filteredTasks" :key="index">
+          {{ task.task }}
           <button @click="handleDelete(task.id)">
             <Trash2 :size="16" />
           </button>
         </li>
       </ul>
 
-      <div class="list-empty" v-if="tasks.length === 0">
-        Não há tarefas. Adicione uma!
+      <div class="list-empty" v-else>
+        Não há tarefas.
       </div>
+
     </div>
   </div>
 
@@ -111,11 +128,18 @@ const handleSearch = (e) => {
   justify-content: space-between;
 }
 
-.form-container>p {
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-container>p {
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
   font-size: 20px;
+  padding: 1rem 0;
 }
 
 .list-container li button:hover {
@@ -136,14 +160,21 @@ const handleSearch = (e) => {
   background: transparent;
 }
 
-.inputs-container {
-  /*  */
-}
-
 .list-empty {
   padding: 1rem;
   border-radius: 6px;
   background: gray
+}
+
+.exports-container {
+  display: flex;
+  justify-content: end;
+  gap: 4px;
+}
+
+.exports-container button {
+  height: auto;
+  padding: 2px;
 }
 
 form {
