@@ -126,7 +126,7 @@ const filteredTasks = computed(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
+} 
 
 .title-container {
   display: flex;
