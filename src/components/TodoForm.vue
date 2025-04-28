@@ -2,7 +2,7 @@
 
 import { ref, onMounted, computed } from 'vue';
 import { Trash2 } from 'lucide-vue-next';
-import { ViFileTypeExcel } from "oh-vue-icons/icons";
+import { exportExcel, exportPDF } from "../helpers.js";
 
 const newTask = ref("");
 const tasks = ref([]);
@@ -55,6 +55,7 @@ const filteredTasks = computed(() => {
   )
 })
 
+
 </script>
 
 <template>
@@ -63,12 +64,13 @@ const filteredTasks = computed(() => {
 
     <div class="title-container">
       <p>Gerencie suas tarefas</p>
-      <div class="exports-container">
-        <button>
+      <div v-if="filteredTasks.length !== 0" class="exports-container">
+        <button
+          @click="exportExcel(tasks, `lsTarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
           <v-icon name="vi-file-type-excel" />
         </button>
-        <button>
-          <v-icon name="vi-file-type-pdf" width="24" height="24" />
+        <button @click="exportPDF(tasks)">
+          <v-icon name="vi-file-type-pdf" />
         </button>
       </div>
     </div>
@@ -126,7 +128,7 @@ const filteredTasks = computed(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-} 
+}
 
 .title-container {
   display: flex;
