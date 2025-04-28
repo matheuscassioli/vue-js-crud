@@ -6,7 +6,7 @@ import TodoForm from './components/TodoForm.vue'
 
 <template>
 
-  <div class="application-container"> 
+  <div class="application-container">
 
     <main class="main-container">
       <TodoForm />

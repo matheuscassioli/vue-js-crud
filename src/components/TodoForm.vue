@@ -2,7 +2,7 @@
 
 import { ref, onMounted, computed } from 'vue';
 import { Trash2 } from 'lucide-vue-next';
-import { exportExcel, exportPDF } from "../helpers.js";
+import { exportExcel, exportPDF, showToast } from "../helpers.js";
 
 const newTask = ref("");
 const tasks = ref([]);
@@ -40,6 +40,7 @@ const handleSubmit = () => {
   loadTasksFromLocalStorage();
   newTask.value = "";
   searchParam.value = "";
+  showToast('Tarefa criada com sucesso!', 'success', 2000)
 }
 
 const handleDelete = (id) => {
@@ -47,6 +48,7 @@ const handleDelete = (id) => {
   const newTasks = tasksInLocalStorage.filter((task) => task.id !== id);
   localStorage.setItem('tasks', JSON.stringify(newTasks));
   loadTasksFromLocalStorage();
+  showToast('Tarefa deletada com sucesso!', 'success', 2000)
 }
 
 const filteredTasks = computed(() => {
@@ -61,12 +63,11 @@ const filteredTasks = computed(() => {
 <template>
   <div class="form-container">
 
-
     <div class="title-container">
       <p>Gerencie suas tarefas</p>
       <div v-if="filteredTasks.length !== 0" class="exports-container">
         <button
-          @click="exportExcel(tasks, `lsTarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
+          @click="exportExcel(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
           <v-icon name="vi-file-type-excel" />
         </button>
         <button @click="exportPDF(tasks)">

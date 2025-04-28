@@ -18,10 +18,9 @@ export function exportExcel(tasks, headerData, fileName) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        showToast('Excel exportado com sucesso!', 'success', 2000)
     }
 }
-
-
 
 export function exportPDF(tasks) {
     console.log(tasks)
@@ -37,3 +36,7 @@ const formatDate = () => {
     const seconds = String(now.getSeconds()).padStart(2, '0');
     return `${day}-${month}-${year} ${hours}h${minutes}m${seconds}s`;
 };
+
+export function showToast(message, type, duration = '3000') {
+    console.log(message, type, duration)
+}
