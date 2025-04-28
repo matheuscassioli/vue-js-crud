@@ -1,15 +1,17 @@
 <script setup>
+import { Toaster } from 'vue-sonner';
 import Footer from './components/Footer.vue';
-import TodoForm from './components/TodoForm.vue'
-
+import TodoList from './components/TodoList.vue';
+ 
 </script>
 
 <template>
 
   <div class="application-container">
+    <Toaster position="top-center" />
 
     <main class="main-container">
-      <TodoForm />
+      <TodoList />
 
     </main>
 

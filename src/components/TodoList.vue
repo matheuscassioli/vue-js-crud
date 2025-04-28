@@ -1,12 +1,14 @@
 <script setup>
 
 import { ref, onMounted, computed } from 'vue';
-import { Trash2 } from 'lucide-vue-next';
-import { exportExcel, exportPDF, showToast } from "../helpers.js";
+import { Plus, Trash2 } from 'lucide-vue-next';
+import { exportExcel, exportPDF, fillInErrorsInTheFields, showToast } from "../helpers.js";
+
 
 const newTask = ref("");
 const tasks = ref([]);
 const searchParam = ref('')
+const inputField = ref(null)
 
 onMounted(() => {
   loadTasksFromLocalStorage();
@@ -18,7 +20,12 @@ const loadTasksFromLocalStorage = () => {
 };
 
 const handleSubmit = () => {
-  if (newTask.value.trim() === "") return;
+  inputField.value.classList.remove('danger')
+
+  if (newTask.value.trim() === "") {
+    fillInErrorsInTheFields(inputField)
+    return
+  }
 
   const taskExists = tasks.value.some(task => task.task === newTask.value.trim());
 
@@ -57,7 +64,6 @@ const filteredTasks = computed(() => {
   )
 })
 
-
 </script>
 
 <template>
@@ -66,11 +72,12 @@ const filteredTasks = computed(() => {
     <div class="title-container">
       <p>Gerencie suas tarefas</p>
       <div v-if="filteredTasks.length !== 0" class="exports-container">
-        <button
+        <button v-tooltip="'Exportar CSV'"
           @click="exportExcel(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
           <v-icon name="vi-file-type-excel" />
         </button>
-        <button @click="exportPDF(tasks)">
+        <button v-tooltip="'Exportar PDF'"
+          @click="exportPDF(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
           <v-icon name="vi-file-type-pdf" />
         </button>
       </div>
@@ -78,8 +85,10 @@ const filteredTasks = computed(() => {
 
     <div class="inputs-container">
       <form @submit.prevent="handleSubmit">
-        <input v-model="newTask" placeholder="Digite uma tarefa" />
-        <button type="submit">Adicionar</button>
+        <input ref="inputField" v-model="newTask" placeholder="Digite uma tarefa" />
+        <button type="submit">
+          <Plus :size="16" />
+        </button>
       </form>
 
       <form>
@@ -92,7 +101,7 @@ const filteredTasks = computed(() => {
         <li v-for="(task, index) in filteredTasks" :key="index">
           {{ task.task }}
           <button @click="handleDelete(task.id)">
-            <Trash2 :size="16" />
+            <Trash2 :size="14" />
           </button>
         </li>
       </ul>
@@ -150,19 +159,6 @@ const filteredTasks = computed(() => {
   transition: .3s;
 }
 
-.list-container::-webkit-scrollbar {
-  width: 4px;
-}
-
-.list-container::-webkit-scrollbar-thumb {
-  background-color: rgba(209, 209, 209, 0.2);
-  border-radius: 10px;
-}
-
-.list-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .list-empty {
   padding: 1rem;
   border-radius: 6px;
@@ -186,12 +182,18 @@ form {
   margin-bottom: 16px;
 }
 
-input {
-  flex: 1;
-  padding: 8px;
+
+/* SCROOLBAR LIST */
+.list-container::-webkit-scrollbar {
+  width: 4px;
 }
 
-button {
-  padding: 8px 12px;
+.list-container::-webkit-scrollbar-thumb {
+  background-color: rgba(209, 209, 209, 0.2);
+  border-radius: 10px;
+}
+
+.list-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 </style>

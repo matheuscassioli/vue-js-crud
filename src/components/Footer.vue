@@ -12,5 +12,6 @@
 <style>
 .footer-container {
     color: white;
+    font: 12px;
 }
 </style>
