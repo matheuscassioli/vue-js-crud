@@ -1,8 +1,7 @@
 <script setup>
 import { Toaster } from 'vue-sonner';
 import Footer from './components/Footer.vue';
-import TodoList from './components/TodoList.vue';
- 
+import TodoList from './components/TodoList.vue'; 
 </script>
 
 <template>
@@ -12,7 +11,6 @@ import TodoList from './components/TodoList.vue';
 
     <main class="main-container">
       <TodoList />
-
     </main>
 
     <Footer />

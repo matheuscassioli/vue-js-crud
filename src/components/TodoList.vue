@@ -1,8 +1,10 @@
 <script setup>
 
 import { ref, onMounted, computed } from 'vue';
-import { Plus, Trash2 } from 'lucide-vue-next';
-import { exportExcel, exportPDF, fillInErrorsInTheFields, showToast } from "../helpers.js";
+import { Trash2 } from 'lucide-vue-next';
+import { fillInErrorsInTheFields, showToast } from "../helpers.js";
+import TitleContainer from './TitleContainer.vue';
+import InputsContainer from './InputsContainer.vue';
 
 
 const newTask = ref("");
@@ -30,7 +32,7 @@ const handleSubmit = () => {
   const taskExists = tasks.value.some(task => task.task === newTask.value.trim());
 
   if (taskExists) {
-    alert('Esse item já está na lista!');
+    showToast('Esse item já está na lista!', 'error');
     return;
   }
 
@@ -69,32 +71,10 @@ const filteredTasks = computed(() => {
 <template>
   <div class="form-container">
 
-    <div class="title-container">
-      <p>Gerencie suas tarefas</p>
-      <div v-if="filteredTasks.length !== 0" class="exports-container">
-        <button v-tooltip="'Exportar CSV'"
-          @click="exportExcel(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
-          <v-icon name="vi-file-type-excel" />
-        </button>
-        <button v-tooltip="'Exportar PDF'"
-          @click="exportPDF(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
-          <v-icon name="vi-file-type-pdf" />
-        </button>
-      </div>
-    </div>
+    <TitleContainer :filteredTasks="filteredTasks" :tasks="tasks" />
 
-    <div class="inputs-container">
-      <form @submit.prevent="handleSubmit">
-        <input ref="inputField" v-model="newTask" placeholder="Digite uma tarefa" />
-        <button type="submit">
-          <Plus :size="16" />
-        </button>
-      </form>
-
-      <form>
-        <input v-model="searchParam" placeholder="Filtrar" />
-      </form>
-    </div>
+    <InputsContainer :newTask="newTask" :searchParam="searchParam" :handleSubmit="handleSubmit"
+      :inputField="inputField" />
 
     <div class="list-context-container">
       <ul v-if="filteredTasks.length !== 0" class="list-container">
@@ -109,7 +89,6 @@ const filteredTasks = computed(() => {
       <div class="list-empty" v-else>
         Não há tarefas.
       </div>
-
     </div>
   </div>
 
@@ -140,20 +119,6 @@ const filteredTasks = computed(() => {
   justify-content: space-between;
 }
 
-.title-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title-container>p {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 20px;
-  padding: 1rem 0;
-}
-
 .list-container li button:hover {
   color: rgba(233, 64, 64, 0.69);
   transition: .3s;
@@ -164,24 +129,6 @@ const filteredTasks = computed(() => {
   border-radius: 6px;
   background: gray
 }
-
-.exports-container {
-  display: flex;
-  justify-content: end;
-  gap: 4px;
-}
-
-.exports-container button {
-  height: auto;
-  padding: 2px;
-}
-
-form {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
 
 /* SCROOLBAR LIST */
 .list-container::-webkit-scrollbar {
