@@ -4,11 +4,7 @@
     </footer>
 
 </template>
-
-<script setup>
-
-</script>
-
+ 
 <style>
 .footer-container {
     color: white;

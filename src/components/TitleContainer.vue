@@ -1,20 +1,3 @@
-<script setup>
-import { exportExcel, exportPDF } from "../helpers.js";
-import { defineProps } from 'vue';
-
-const props = defineProps({
-    filteredTasks: {
-        type: Array,
-        required: true
-    },
-    tasks: {
-        type: Array,
-        required: true
-    }
-})
-</script>
-
-
 <template>
     <div class="title-container">
         <p>Gerencie suas tarefas</p>
@@ -31,6 +14,22 @@ const props = defineProps({
     </div>
 
 </template>
+
+<script setup>
+import { exportExcel, exportPDF } from "../helpers.js";
+import { defineProps } from 'vue';
+
+const props = defineProps({
+    filteredTasks: {
+        type: Array,
+        required: true
+    },
+    tasks: {
+        type: Array,
+        required: true
+    }
+})
+</script>
 
 <style scoped>
 .title-container {

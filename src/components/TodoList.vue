@@ -1,3 +1,30 @@
+  <template>
+    <div class="form-container">
+
+      <TitleContainer :filteredTasks="filteredTasks" :tasks="tasks" />
+
+      <InputsContainer :newTask="newTask" :searchParam="searchParam" :inputField="inputField"
+        @update:newTask="newTask = $event" @update:searchParam="searchParam = $event" @handleSubmit="handleSubmit" />
+
+
+      <div class="list-context-container">
+        <ul v-if="filteredTasks.length !== 0" class="list-container">
+          <li v-for="(task, index) in filteredTasks" :key="index">
+            {{ task.task }}
+            <button @click="handleDelete(task.id)">
+              <Trash2 :size="14" />
+            </button>
+          </li>
+        </ul>
+
+        <div class="list-empty" v-else>
+          Não há tarefas.
+        </div>
+      </div>
+    </div>
+
+  </template>
+
 <script setup>
 
 import { ref, onMounted, computed } from 'vue';
@@ -10,19 +37,23 @@ import InputsContainer from './InputsContainer.vue';
 const newTask = ref("");
 const tasks = ref([]);
 const searchParam = ref('')
-const inputField = ref(null)
+const inputField = ref({})
 
 onMounted(() => {
   loadTasksFromLocalStorage();
+
 });
 
+const localInput = ref(null); 
+ 
 const loadTasksFromLocalStorage = () => {
   const tasksSaveInLocalStorage = JSON.parse(localStorage.getItem('tasks')) || [];
   tasks.value = tasksSaveInLocalStorage;
 };
 
 const handleSubmit = () => {
-  inputField.value.classList.remove('danger')
+
+  inputField.value.classList?.remove('danger')
 
   if (newTask.value.trim() === "") {
     fillInErrorsInTheFields(inputField)
@@ -67,32 +98,6 @@ const filteredTasks = computed(() => {
 })
 
 </script>
-
-<template>
-  <div class="form-container">
-
-    <TitleContainer :filteredTasks="filteredTasks" :tasks="tasks" />
-
-    <InputsContainer :newTask="newTask" :searchParam="searchParam" :handleSubmit="handleSubmit"
-      :inputField="inputField" />
-
-    <div class="list-context-container">
-      <ul v-if="filteredTasks.length !== 0" class="list-container">
-        <li v-for="(task, index) in filteredTasks" :key="index">
-          {{ task.task }}
-          <button @click="handleDelete(task.id)">
-            <Trash2 :size="14" />
-          </button>
-        </li>
-      </ul>
-
-      <div class="list-empty" v-else>
-        Não há tarefas.
-      </div>
-    </div>
-  </div>
-
-</template>
 
 <style scoped>
 .list-context-container {

@@ -1,34 +1,6 @@
-<script setup>
-import { Plus } from 'lucide-vue-next';
-import { defineProps, defineEmits } from 'vue';
-
-const props = defineProps({
-    newTask: {
-        type: String,
-        required: true
-    },
-    searchParam: {
-        type: String,
-        required: true
-    },
-    handleSubmit: {
-        type: Function,
-        required: true
-    },
-    inputField: {
-        type: Object,
-        required: true
-    }
-});
-
-
-const emit = defineEmits(['update:newTask', 'update:searchParam', 'handleSubmit']);
-
-</script>
-
 <template>
     <div class="inputs-container">
-        <form @submit.prevent="$emit('handleSubmit')">
+        <form @submit.prevent="onSubmit">
             <input ref="inputField" :value="newTask" @input="$emit('update:newTask', $event.target.value)"
                 placeholder="Digite uma tarefa" />
             <button type="submit">
@@ -42,6 +14,32 @@ const emit = defineEmits(['update:newTask', 'update:searchParam', 'handleSubmit'
         </form>
     </div>
 </template>
+
+<script setup>
+import { Plus } from 'lucide-vue-next';
+
+
+const props = defineProps({
+    newTask: {
+        type: String,
+        required: true
+    },
+    searchParam: {
+        type: String,
+        required: true
+    },
+    inputField: {
+        type: [Object, null], 
+        required: true
+    }
+});
+
+const emit = defineEmits(['update:newTask', 'update:searchParam', 'handleSubmit']);
+
+const onSubmit = () => {
+     emit('handleSubmit');
+};
+</script>
 
 <style scoped>
 form {

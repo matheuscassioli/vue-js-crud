@@ -73,7 +73,5 @@ export function showToast(message, type, duration = '3000') {
 }
 
 export const fillInErrorsInTheFields = (inputField, type = 'text') => {
-    if (type == 'text') {
-        inputField.value.classList.add('danger')
-    }
-}
+    console.log(inputField, type, '<-- metodo que aplica erros')
+};
