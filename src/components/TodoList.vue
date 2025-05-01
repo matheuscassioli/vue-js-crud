@@ -44,8 +44,6 @@ onMounted(() => {
 
 });
 
-const localInput = ref(null); 
- 
 const loadTasksFromLocalStorage = () => {
   const tasksSaveInLocalStorage = JSON.parse(localStorage.getItem('tasks')) || [];
   tasks.value = tasksSaveInLocalStorage;
@@ -122,7 +120,8 @@ const filteredTasks = computed(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
+  border-bottom: 1px solid #333333;
+} 
 
 .list-container li button:hover {
   color: rgba(233, 64, 64, 0.69);
