@@ -68,6 +68,12 @@ input {
   background-color: #242424;
 }
 
+.error-text {
+  color: #dc3232;
+  font-size: 11px;
+  min-height: 16.5px;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {

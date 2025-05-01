@@ -1,12 +1,15 @@
 <template>
     <div class="inputs-container">
-        <form @submit.prevent="onSubmit">
-            <input ref="inputField" :value="newTask" @input="$emit('update:newTask', $event.target.value)"
-                placeholder="Digite uma tarefa" />
-            <button v-tooltip="'Adicionar tarefa'" type="submit">
-                <Plus :size="16" />
-            </button>
-        </form>
+        <div>
+            <form @submit.prevent="onSubmit">
+                <input :value="newTask" id="add-task" @input="$emit('update:newTask', $event.target.value)"
+                    placeholder="Digite uma tarefa" />
+                <button v-tooltip="'Adicionar tarefa'" type="submit">
+                    <Plus :size="16" />
+                </button>
+            </form>
+            <p class="error-text"></p>
+        </div>
 
         <form class="form-search">
             <Search v-tooltip="'Filtrar'" :size="20" />
@@ -29,10 +32,6 @@ const props = defineProps({
         type: String,
         required: true
     },
-    inputField: {
-        type: [Object, null],
-        required: true
-    }
 });
 
 const emit = defineEmits(['update:newTask', 'update:searchParam', 'handleSubmit']);
@@ -46,7 +45,10 @@ const onSubmit = () => {
 form {
     display: flex;
     gap: 8px;
-    margin-bottom: 16px;
+}
+
+.inputs-container>div {
+    margin-bottom: 8px;
 }
 
 .form-search {
@@ -62,5 +64,10 @@ form {
 
 .form-search input {
     padding-left: 40px;
+    margin-bottom: 1rem;
+}
+
+#form-add-task {
+    background-color: red;
 }
 </style>

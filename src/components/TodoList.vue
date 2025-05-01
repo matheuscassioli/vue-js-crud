@@ -3,11 +3,15 @@
 
       <TitleContainer :filteredTasks="filteredTasks" :tasks="tasks" />
 
-      <InputsContainer :newTask="newTask" :searchParam="searchParam" :inputField="inputField"
-        @update:newTask="newTask = $event" @update:searchParam="searchParam = $event" @handleSubmit="handleSubmit" />
-
+      <InputsContainer :newTask="newTask" :searchParam="searchParam" @update:newTask="newTask = $event"
+        @update:searchParam="searchParam = $event" @handleSubmit="handleSubmit" />
 
       <div class="list-context-container">
+
+        <div v-if="loadingTable"class="loader-table"> 
+          <RingLoader color="#9810fa" />
+        </div>
+
         <ul v-if="filteredTasks.length !== 0" class="list-container">
           <li v-for="(task, index) in filteredTasks" :key="index">
             {{ task.task }}
@@ -21,8 +25,7 @@
           Não há tarefas.
         </div>
       </div>
-    </div>
-
+    </div> 
   </template>
 
 <script setup>
@@ -33,15 +36,15 @@ import { fillInErrorsInTheFields, showToast } from "../helpers.js";
 import TitleContainer from './TitleContainer.vue';
 import InputsContainer from './InputsContainer.vue';
 
+import RingLoader from 'vue-spinner/src/RingLoader.vue'
 
 const newTask = ref("");
 const tasks = ref([]);
 const searchParam = ref('')
-const inputField = ref({})
+const loadingTable = ref(false)
 
 onMounted(() => {
   loadTasksFromLocalStorage();
-
 });
 
 const loadTasksFromLocalStorage = () => {
@@ -50,20 +53,25 @@ const loadTasksFromLocalStorage = () => {
 };
 
 const handleSubmit = () => {
+  const captureNewTextField = document.querySelector('#add-task')
 
-  inputField.value.classList?.remove('danger')
-
-  if (newTask.value.trim() === "") {
-    fillInErrorsInTheFields(inputField)
-    return
-  }
+  captureNewTextField.classList.remove('danger')
+  captureNewTextField.parentElement.nextElementSibling.innerHTML = ''
 
   const taskExists = tasks.value.some(task => task.task === newTask.value.trim());
 
+  if (!newTask.value.trim()) {
+    fillInErrorsInTheFields(captureNewTextField)
+    return
+  }
+
   if (taskExists) {
     showToast('Esse item já está na lista!', 'error');
+    fillInErrorsInTheFields(captureNewTextField, false)
     return;
   }
+
+  loadingTable.value = true
 
   const newId = tasks.value.length ? tasks.value[tasks.value.length - 1].id + 1 : 0;
 
@@ -76,9 +84,15 @@ const handleSubmit = () => {
   tasksInLocalStorage.push(newTaskObj);
   localStorage.setItem('tasks', JSON.stringify(tasksInLocalStorage));
   loadTasksFromLocalStorage();
-  newTask.value = "";
-  searchParam.value = "";
-  showToast('Tarefa criada com sucesso!', 'success', 2000)
+  
+  setTimeout(()=>{
+    loadingTable.value = false;
+    
+    newTask.value = "";
+    searchParam.value = "";
+
+    showToast('Tarefa criada com sucesso!', 'success', 2000)
+  }, 2000)
 }
 
 const handleDelete = (id) => {
@@ -100,6 +114,7 @@ const filteredTasks = computed(() => {
 <style scoped>
 .list-context-container {
   min-height: 350px;
+  position: relative;
 }
 
 .list-container {
@@ -121,14 +136,14 @@ const filteredTasks = computed(() => {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #333333;
-} 
+}
 
 .list-container li button:hover {
   color: rgba(233, 64, 64, 0.69);
   transition: .3s;
 }
 
-.list-empty {
+.list-empty { 
   padding: 1rem;
   border-radius: 6px;
   background: gray
@@ -146,5 +161,14 @@ const filteredTasks = computed(() => {
 
 .list-container::-webkit-scrollbar-track {
   background: transparent;
+}
+.loader-table{
+  position: absolute; 
+  width: 100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#7c7c7c3b;
 }
 </style>

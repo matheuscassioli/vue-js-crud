@@ -72,6 +72,9 @@ export function showToast(message, type, duration = '3000') {
     toast[type](message, { duration })
 }
 
-export const fillInErrorsInTheFields = (inputField, type = 'text') => {
-    console.log(inputField, type, '<-- metodo que aplica erros')
+export const fillInErrorsInTheFields = (inputField, useText = true) => {
+    inputField.classList.add('danger')
+    if (useText) {
+        inputField.parentElement.nextElementSibling.innerHTML = 'o campo tarefa é obrigatório'
+    }
 };
