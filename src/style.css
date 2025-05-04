@@ -73,7 +73,7 @@ input {
   font-size: 11px;
   min-height: 16.5px;
 }
-
+ 
 
 @media (prefers-color-scheme: light) {
   :root {

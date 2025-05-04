@@ -10,14 +10,17 @@
                 @click="exportPDF(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
                 <v-icon name="vi-file-type-pdf" />
             </button>
+            <button @click="deleteInBulk()" :disabled="!tasksDelete.length" v-tooltip="'Deletar tarefas em massa'">
+                <Shredder :size="16" />
+            </button>
         </div>
     </div>
 
 </template>
 
 <script setup>
+import { Shredder } from "lucide-vue-next";
 import { exportExcel, exportPDF } from "../helpers.js";
-import { defineProps } from 'vue';
 
 const props = defineProps({
     filteredTasks: {
@@ -27,8 +30,17 @@ const props = defineProps({
     tasks: {
         type: Array,
         required: true
+    },
+    tasksDelete: {
+        type: Array,
+        required: true
+    },
+    deleteInBulk: {
+        type: Function,
+        required: true
     }
 })
+
 </script>
 
 <style scoped>

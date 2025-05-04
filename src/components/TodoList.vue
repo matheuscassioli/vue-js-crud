@@ -1,20 +1,27 @@
   <template>
     <div class="form-container">
 
-      <TitleContainer :filteredTasks="filteredTasks" :tasks="tasks" />
+      <TitleContainer :deleteInBulk="deleteInBulk" :tasksDelete="tasksDelete" :filteredTasks="filteredTasks"
+        :tasks="tasks" />
 
       <InputsContainer :newTask="newTask" :searchParam="searchParam" @update:newTask="newTask = $event"
         @update:searchParam="searchParam = $event" @handleSubmit="handleSubmit" />
 
       <div class="list-context-container">
 
-        <div v-if="loadingTable"class="loader-table"> 
+        <div v-if="loadingTable" class="loader-table">
           <RingLoader color="#9810fa" />
         </div>
 
         <ul v-if="filteredTasks.length !== 0" class="list-container">
           <li v-for="(task, index) in filteredTasks" :key="index">
-            {{ task.task }}
+            <div class="task-item">
+              <span>
+                <input @change="(e) => constructArrDeleteTasks(e, task)" :checked="tasksDelete.includes(task.id)" 
+                  type="checkbox" />
+              </span>
+              {{ task.task }}
+            </div>
             <button @click="handleDelete(task.id)">
               <Trash2 :size="14" />
             </button>
@@ -25,7 +32,7 @@
           Não há tarefas.
         </div>
       </div>
-    </div> 
+    </div>
   </template>
 
 <script setup>
@@ -40,6 +47,7 @@ import RingLoader from 'vue-spinner/src/RingLoader.vue'
 
 const newTask = ref("");
 const tasks = ref([]);
+const tasksDelete = ref([]);
 const searchParam = ref('')
 const loadingTable = ref(false)
 
@@ -83,16 +91,14 @@ const handleSubmit = () => {
   const tasksInLocalStorage = JSON.parse(localStorage.getItem('tasks')) || [];
   tasksInLocalStorage.push(newTaskObj);
   localStorage.setItem('tasks', JSON.stringify(tasksInLocalStorage));
-  loadTasksFromLocalStorage();
-  
-  setTimeout(()=>{
+
+  setTimeout(() => {
     loadingTable.value = false;
-    
     newTask.value = "";
     searchParam.value = "";
-
     showToast('Tarefa criada com sucesso!', 'success', 2000)
-  }, 2000)
+    loadTasksFromLocalStorage();
+  }, 1500)
 }
 
 const handleDelete = (id) => {
@@ -108,6 +114,28 @@ const filteredTasks = computed(() => {
     task.task.trim().toLowerCase().includes(searchParam.value.toLowerCase())
   )
 })
+
+const constructArrDeleteTasks = (e, task) => {
+  const isChecked = e.target.checked;
+  const idTask = task.id
+
+  if (isChecked) {
+    if (!tasksDelete.value.includes(idTask)) {
+      tasksDelete.value.push(idTask)
+      return
+    }
+  }
+  tasksDelete.value = tasksDelete.value.filter(id => id !== idTask);
+}
+
+const deleteInBulk = () => {
+  const tasksToDelete = tasksDelete.value
+  const tasksInLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+  const newTasks = tasksInLocalStorage.filter(task => !tasksToDelete.includes(task.id));
+  localStorage.setItem('tasks', JSON.stringify(newTasks));
+  loadTasksFromLocalStorage()
+  tasksDelete.value = []
+}
 
 </script>
 
@@ -143,10 +171,20 @@ const filteredTasks = computed(() => {
   transition: .3s;
 }
 
-.list-empty { 
+.list-empty {
   padding: 1rem;
   border-radius: 6px;
   background: gray
+}
+
+.task-item {
+  display: flex;
+  gap: 10px;
+}
+
+.task-item input {
+  width: 12px;
+  cursor: pointer;
 }
 
 /* SCROOLBAR LIST */
@@ -162,13 +200,14 @@ const filteredTasks = computed(() => {
 .list-container::-webkit-scrollbar-track {
   background: transparent;
 }
-.loader-table{
-  position: absolute; 
+
+.loader-table {
+  position: absolute;
   width: 100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#7c7c7c3b;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7c7c7c3b;
 }
 </style>

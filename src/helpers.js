@@ -78,3 +78,5 @@ export const fillInErrorsInTheFields = (inputField, useText = true) => {
         inputField.parentElement.nextElementSibling.innerHTML = 'o campo tarefa é obrigatório'
     }
 };
+
+
