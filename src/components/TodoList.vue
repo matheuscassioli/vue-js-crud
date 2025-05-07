@@ -90,12 +90,13 @@ const handleSubmit = () => {
   tasksInLocalStorage.push(newTaskObj);
   localStorage.setItem('tasks', JSON.stringify(tasksInLocalStorage));
 
+
   setTimeout(() => {
     newTask.value = "";
     searchParam.value = "";
-    showToast('Tarefa criada com sucesso!', 'success', 2000)
     loadTasksFromLocalStorage();
-  }, 1500)
+    showToast('Tarefa criada com sucesso!', 'success', 1500)
+  }, 1000)
 
   loadingFakeFront()
 }
@@ -135,8 +136,7 @@ const constructArrDeleteTasks = (e, task) => {
   tasksDelete.value = tasksDelete.value.filter(id => id !== idTask);
 }
 
-const deleteInBulk = () => {
-  loadingFakeFront()
+const deleteInBulk = () => { 
   const tasksToDelete = tasksDelete.value
   const tasksInLocalStorage = JSON.parse(localStorage.getItem('tasks'));
   const newTasks = tasksInLocalStorage.filter(task => !tasksToDelete.includes(task.id));

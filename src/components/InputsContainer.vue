@@ -65,9 +65,6 @@ form {
 .form-search input {
     padding-left: 40px;
     margin-bottom: 1rem;
-}
-
-#form-add-task {
-    background-color: red;
-}
+} 
+ 
 </style>

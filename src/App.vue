@@ -77,7 +77,7 @@ function updateDate() {
   transition: box-shadow 0.2s ease;
   left: 50%;
   transform: translate(-50%, -50%);
-  top: 22px;
+  top: 16px;
 }
 
 .clock-box:hover {
@@ -133,8 +133,9 @@ function updateDate() {
   }
 
   .application-container {
-    height: 95vh;
+    height: 92vh;
     justify-content: space-between;
+    margin-top: 1rem;
   }
 }
 </style>

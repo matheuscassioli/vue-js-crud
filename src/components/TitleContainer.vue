@@ -11,7 +11,7 @@
                 <v-icon name="vi-file-type-pdf" />
             </button>
             <button @click="deleteInBulk()" :disabled="!tasksDelete.length" v-tooltip="'Deletar tarefas em lote'">
-                <Shredder :size="16" />
+                <Shredder :size="17" />
             </button>
         </div>
     </div>
@@ -67,6 +67,11 @@ const props = defineProps({
 .exports-container button {
     height: auto;
     padding: 2px;
-} 
- 
+}
+
+@media screen and (max-width: 768px) {
+    .title-container>p {
+        font-size: 14px;
+    }
+}
 </style>
