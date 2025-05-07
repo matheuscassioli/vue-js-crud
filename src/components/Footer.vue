@@ -19,4 +19,8 @@
     color: white;
     font-size: 12px;
 }
+
+.footer-container img {
+    border-radius: 50%;
+}
 </style>

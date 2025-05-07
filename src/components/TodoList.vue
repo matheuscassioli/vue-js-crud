@@ -17,7 +17,7 @@
           <li v-for="(task, index) in filteredTasks" :key="index">
             <div class="task-item">
               <span>
-                <input @change="(e) => constructArrDeleteTasks(e, task)" :checked="tasksDelete.includes(task.id)" 
+                <input @change="(e) => constructArrDeleteTasks(e, task)" :checked="tasksDelete.includes(task.id)"
                   type="checkbox" />
               </span>
               {{ task.task }}
@@ -79,8 +79,6 @@ const handleSubmit = () => {
     return;
   }
 
-  loadingTable.value = true
-
   const newId = tasks.value.length ? tasks.value[tasks.value.length - 1].id + 1 : 0;
 
   const newTaskObj = {
@@ -93,12 +91,13 @@ const handleSubmit = () => {
   localStorage.setItem('tasks', JSON.stringify(tasksInLocalStorage));
 
   setTimeout(() => {
-    loadingTable.value = false;
     newTask.value = "";
     searchParam.value = "";
     showToast('Tarefa criada com sucesso!', 'success', 2000)
     loadTasksFromLocalStorage();
   }, 1500)
+
+  loadingFakeFront()
 }
 
 const handleDelete = (id) => {
@@ -106,7 +105,15 @@ const handleDelete = (id) => {
   const newTasks = tasksInLocalStorage.filter((task) => task.id !== id);
   localStorage.setItem('tasks', JSON.stringify(newTasks));
   loadTasksFromLocalStorage();
+  loadingFakeFront()
   showToast('Tarefa deletada com sucesso!', 'success', 2000)
+}
+
+const loadingFakeFront = () => {
+  loadingTable.value = true
+  setTimeout(() => {
+    loadingTable.value = false
+  }, 1000)
 }
 
 const filteredTasks = computed(() => {
@@ -129,12 +136,16 @@ const constructArrDeleteTasks = (e, task) => {
 }
 
 const deleteInBulk = () => {
+  loadingFakeFront()
   const tasksToDelete = tasksDelete.value
   const tasksInLocalStorage = JSON.parse(localStorage.getItem('tasks'));
   const newTasks = tasksInLocalStorage.filter(task => !tasksToDelete.includes(task.id));
   localStorage.setItem('tasks', JSON.stringify(newTasks));
   loadTasksFromLocalStorage()
   tasksDelete.value = []
+  const isSingularTasks = tasksToDelete.length > 1
+  const message = `Tarefa${isSingularTasks ? 's' : ''} deletada${isSingularTasks ? 's' : ''} com sucesso!`
+  showToast(message, 'success')
 }
 
 </script>
@@ -187,6 +198,17 @@ const deleteInBulk = () => {
   cursor: pointer;
 }
 
+
+.loader-table {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7c7c7c3b;
+}
+
 /* SCROOLBAR LIST */
 .list-container::-webkit-scrollbar {
   width: 4px;
@@ -199,15 +221,5 @@ const deleteInBulk = () => {
 
 .list-container::-webkit-scrollbar-track {
   background: transparent;
-}
-
-.loader-table {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #7c7c7c3b;
 }
 </style>

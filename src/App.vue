@@ -54,6 +54,8 @@ function updateDate() {
   width: 100%;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+
 }
 
 .main-container {
@@ -89,6 +91,20 @@ function updateDate() {
   align-items: center;
 }
 
+.clock-icon svg {
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .clock-text {
   font-size: 14px;
   font-weight: 500;
@@ -100,12 +116,25 @@ function updateDate() {
 @keyframes oscillate {
   0% {
     opacity: 1;
-  } 
+  }
+
   50% {
     opacity: 0.7;
-  } 
+  }
+
   100% {
     opacity: 1;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .main-container {
+    width: 90%;
+  }
+
+  .application-container {
+    height: 95vh;
+    justify-content: space-between;
   }
 }
 </style>

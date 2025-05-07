@@ -10,7 +10,7 @@
                 @click="exportPDF(tasks, `Tarefa${filteredTasks.length > 1 ? 's' : ''}`, `Lista de tarefa${filteredTasks.length > 1 ? 's' : ''}`)">
                 <v-icon name="vi-file-type-pdf" />
             </button>
-            <button @click="deleteInBulk()" :disabled="!tasksDelete.length" v-tooltip="'Deletar tarefas em massa'">
+            <button @click="deleteInBulk()" :disabled="!tasksDelete.length" v-tooltip="'Deletar tarefas em lote'">
                 <Shredder :size="16" />
             </button>
         </div>
@@ -67,5 +67,6 @@ const props = defineProps({
 .exports-container button {
     height: auto;
     padding: 2px;
-}
+} 
+ 
 </style>
