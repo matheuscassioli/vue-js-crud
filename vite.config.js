@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [vue()],
   base: '/vue-js-crud/',
   optimizeDeps: {
-    include: ['v-tooltip'],  
-  }, 
+    include: ['v-tooltip'],
+  },
 })
