@@ -29,10 +29,10 @@ const login = async () => {
                 router.push('/lista');
                 loginButton.value.innerText = 'Entrar'
             }, 1500);
-        } else {
-            loginButton.value.innerText = 'Entrar'
-            throw new Error('Credenciais inválidas');
+            return
         }
+        loginButton.value.innerText = 'Entrar'
+        throw new Error('Credenciais inválidas');
     } catch (error) {
         showToast(error.message, 'error');
     }

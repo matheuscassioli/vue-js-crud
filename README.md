@@ -15,13 +15,14 @@ Como desenvolvedor com experiência em **React**, estou explorando o ecossistema
 - 🖖 [Vue 3](https://vuejs.org/) — Framework progressivo para criar interfaces de usuário.
 - 🧠 **Composição com `ref`, `reactive`, e `computed`** — Para gerenciamento de estado e interatividade.
 - 🧭 **LocalStorage** — Para persistência dos dados localmente no navegador.
-- 🎨 **CSS puro** 
+- 🎨 **CSS puro**
 - ⚙️ **Vite** como bundler para otimização e agilidade no desenvolvimento.
 
 ---
 
 ## ✨ **Funcionalidades Atuais**
 
+- ✅ **Autenticação simples**: Login simples para acesso a rota privada.
 - ✅ **Cadastro de tarefas**: Formulário simples para adicionar tarefas.
 - ✅ **Listagem de tarefas**: Exibe as tarefas cadastradas em tempo real.
 - ✅ **Exclusão de tarefas**: Permite remover tarefas da lista.
@@ -29,11 +30,12 @@ Como desenvolvedor com experiência em **React**, estou explorando o ecossistema
   - **PDF**: Permite exportar a lista de tarefas para um arquivo PDF.
   - **Excel**: Permite exportar a lista de tarefas para um arquivo Excel.
 - ✅ **Persistência de dados**: Todas as tarefas são salvas no **localStorage**, garantindo que os dados não se percam ao recarregar a página.
-  
+- ✅ **Logout**: Logout limpando usuário localStorage.
+
 🔜 **Próximos passos**:
-- 🔐 **Autenticação simples**: Implementação de um sistema de login para gerenciamento de usuários e suas tarefas.
+
 - ⚙️ **Exploração de novas funcionalidades do Vue 3**, incluindo o uso de **Vue Router** e **Vuex** (ou **Pinia** para estado global).
-  
+
 ---
 
 ## 💻 **Telas**
@@ -41,7 +43,7 @@ Como desenvolvedor com experiência em **React**, estou explorando o ecossistema
 ![Login](./public/login.JPG)
 ![Tarefas](./public/lista.JPG)
 
---- 
+---
 
 ## 📦 **Como Rodar o Projeto Localmente**
 
@@ -50,3 +52,4 @@ Como desenvolvedor com experiência em **React**, estou explorando o ecossistema
 ```bash
 git clone https://github.com/matheuscassioli/vue-task-manager
 cd vue-task-manager
+```

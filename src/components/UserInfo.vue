@@ -24,7 +24,7 @@ function toggleDropdown() {
 
 function logout() {
     localStorage.removeItem('auth')
-    window.location.href = '/login'
+    window.location.href = '/vue-js-crud/#/login'
 }
 </script>
 
