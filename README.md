@@ -36,6 +36,13 @@ Como desenvolvedor com experiência em **React**, estou explorando o ecossistema
   
 ---
 
+## 💻 **Telas**
+
+![Login](./public/login.JPG)
+![Tarefas](./public/lista.JPG)
+
+--- 
+
 ## 📦 **Como Rodar o Projeto Localmente**
 
 ### 1. Clone o Repositório
